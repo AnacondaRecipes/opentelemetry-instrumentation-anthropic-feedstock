@@ -1,34 +1,35 @@
 {% set name = "opentelemetry-instrumentation-anthropic" %}
-{% set version = "0.47.2" %}
+{% set version = "0.47.0" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/opentelemetry_instrumentation_anthropic-{{ version }}.tar.gz
-  sha256: 4d77c3bb2b5c10e580b4549a7c1f893c05ef5f909adf0d82f2eb98100597fc3d
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/opentelemetry_instrumentation_anthropic-{{ version }}.tar.gz
+  sha256: cf7335d52994e44a70ae3d51f07ff2237d5d0679293519a0e9798dd37eb755e8
 
 build:
-  noarch: python
-  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   number: 0
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  skip: true  # [py<39]
 
 requirements:
   host:
-    - python {{ python_min }}
-    - poetry-core
     - pip
+    - python
+    - poetry-core
   run:
-    - python >={{ python_min }}
+    - python
     - opentelemetry-api >=1.28.0,<2.0.0
     - opentelemetry-instrumentation >=0.50b0
     - opentelemetry-semantic-conventions >=0.50b0
-    - opentelemetry-semantic-conventions-ai >=0.4.12,<0.5
+    - opentelemetry-semantic-conventions-ai >=0.4.13,<0.5
     - typing_extensions
   run_constrained:
     - anthropic >=0.36.0
 
+# Tests disabled, fixture not found @pytest.mark.vcr -> pytest-vcr -> https://pypi.org/project/pytest-vcr/
 test:
   imports:
     - opentelemetry.instrumentation.anthropic
@@ -36,8 +37,7 @@ test:
     - pip check
   requires:
     - pip
-    - python {{ python_min }}
-    - anthropic
+    - anthropic >=0.36.0
 
 about:
   home: https://www.traceloop.com/openllmetry
