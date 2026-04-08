@@ -1,5 +1,5 @@
 {% set name = "opentelemetry-instrumentation-anthropic" %}
-{% set version = "0.49.6" %}
+{% set version = "0.57.0" %}
 
 package:
   name: {{ name|lower }}
@@ -7,24 +7,24 @@ package:
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/opentelemetry_instrumentation_anthropic-{{ version }}.tar.gz
-  sha256: 7f2180938a5adfc3026689ddec0169b67bca2aa1593d9da9c99a1285df6c0386
+  sha256: 169270a3c6b9ce49c3d8c7dbf6e13cea0d20c37938dcbddbf2f30450f596dcc6
 
 build:
   number: 0
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
-  skip: true  # [py<39]
+  skip: true  # [py<310]
 
 requirements:
   host:
     - pip
     - python
-    - poetry-core
+    - hatchling
   run:
     - python
     - opentelemetry-api >=1.38.0,<2.0.0
     - opentelemetry-instrumentation >=0.59b0
     - opentelemetry-semantic-conventions >=0.59b0
-    - opentelemetry-semantic-conventions-ai >=0.4.13,<0.5.0
+    - opentelemetry-semantic-conventions-ai >=0.5.1,<0.6.0
   run_constrained:
     - anthropic >=0.36.0
 
@@ -43,9 +43,14 @@ about:
   dev_url: https://github.com/traceloop/openllmetry
   doc_url: https://www.traceloop.com/docs/openllmetry/introduction
   summary: OpenTelemetry Anthropic instrumentation
+  description: |
+    This library allows tracing Anthropic prompts and 
+    completions sent with the official Anthropic library.
   license: Apache-2.0
   license_file: LICENSE
 
 extra:
   recipe-maintainers:
     - timkpaine
+  skip-lints:
+    - reachable_url
