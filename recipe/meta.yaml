@@ -26,15 +26,35 @@ requirements:
     - opentelemetry-semantic-conventions >=0.59b0
     - opentelemetry-semantic-conventions-ai >=0.5.1,<0.6.0
 
-# Tests disabled, fixture not found @pytest.mark.vcr -> pytest-vcr -> https://pypi.org/project/pytest-vcr/
+#AttributeError: module 'opentelemetry.semconv._incubating.attributes.gen_ai_attributes' has no attribute 'GEN_AI_TOOL_DEFINITIONS'
+# No module pytest-vcr installed, so we ignore tests that require it.
+# Ignored tests:
+{% set ignored_tests = [
+  "--ignore=tests/test_completion.py",
+  "--ignore=tests/test_messages.py",
+  "--ignore=tests/test_prompt_caching.py",
+  "--ignore=tests/test_thinking.py",
+  "--ignore=tests/test_bedrock_with_raw_response.py",
+  "--ignore=tests/test_structured_outputs.py",
+  "--deselect=tests/test_semconv_span_attrs.py::test_tool_definitions_attribute"
+] %}
+
 test:
   imports:
     - opentelemetry.instrumentation.anthropic
+  source_files:
+    - tests
+    - pyproject.toml
   commands:
     - pip check
+    - pytest -vvv {{ " ".join(ignored_tests) }}
   requires:
     - pip
+    - boto3
+    - pytest
     - anthropic
+    - pytest-asyncio
+    - opentelemetry-sdk
 
 about:
   home: https://www.traceloop.com/openllmetry
@@ -51,5 +71,3 @@ about:
 extra:
   recipe-maintainers:
     - timkpaine
-  skip-lints:
-    - reachable_url
