@@ -1,13 +1,13 @@
 {% set name = "opentelemetry-instrumentation-anthropic" %}
-{% set version = "0.57.0" %}
+{% set version = "0.62.1" %}
 
 package:
-  name: {{ name|lower }}
+  name: {{ name }}
   version: {{ version }}
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/opentelemetry_instrumentation_anthropic-{{ version }}.tar.gz
-  sha256: 169270a3c6b9ce49c3d8c7dbf6e13cea0d20c37938dcbddbf2f30450f596dcc6
+  sha256: 72864e9ee1802242bc70b911751eaee03277059846ceab4a1cc04f06b36f38ab
 
 build:
   number: 0
@@ -23,8 +23,8 @@ requirements:
     - python
     - opentelemetry-api >=1.38.0,<2.0.0
     - opentelemetry-instrumentation >=0.59b0
-    - opentelemetry-semantic-conventions >=0.59b0
     - opentelemetry-semantic-conventions-ai >=0.5.1,<0.6.0
+    - opentelemetry-semantic-conventions >=0.63b1
 
 #AttributeError: module 'opentelemetry.semconv._incubating.attributes.gen_ai_attributes' has no attribute 'GEN_AI_TOOL_DEFINITIONS'
 # No module pytest-vcr installed, so we ignore tests that require it.
